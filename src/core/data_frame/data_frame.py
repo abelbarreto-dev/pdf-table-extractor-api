@@ -1,18 +1,16 @@
-from os import remove
-from os.path import isfile
 from typing import List
 
 from pandas import DataFrame
 from tabula import read_pdf
+from werkzeug.datastructures import FileStorage
 
 from src.exception.FileNotFound import FileNotFound
 
 
-def get_data_frame(pdf_file: str) -> List[DataFrame]:
-    if not isfile(pdf_file):
+def get_data_frame(pdf_file: FileStorage) -> List[DataFrame]:
+    if not pdf_file:
         raise FileNotFound("pdf file not found")
 
-    try:
-        return read_pdf(pdf_file, pages="all")
-    finally:
-        remove(pdf_file)
+    pdf_file.stream.seek(0)
+
+    return read_pdf(pdf_file.stream, pages="all")
