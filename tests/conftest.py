@@ -6,12 +6,12 @@ from werkzeug.datastructures import FileStorage
 
 
 @pytest.fixture(scope="function")
-def file_none() -> Generator[FileStorage, None]:
+def file_none() -> Generator[FileStorage, None, None]:
     yield FileStorage(content_type="application/pdf")
 
 
 @pytest.fixture(scope="function")
-def pdf_file() -> Generator[FileStorage, None]:
+def pdf_file() -> Generator[FileStorage, None, None]:
     pdf = FileStorage(content_type="application/pdf")
 
     filename = (
