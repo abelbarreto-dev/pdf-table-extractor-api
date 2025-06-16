@@ -1,8 +1,12 @@
+from io import BytesIO
 from os.path import isfile
 from typing import Generator
 
 import pytest
+from pandas import ExcelWriter
 from werkzeug.datastructures import FileStorage
+
+from tests.mocks.table_data_frame import data_frame_teams, data_frame_fruits
 
 
 @pytest.fixture(scope="function")
@@ -49,3 +53,17 @@ def pdf_not_tables() -> Generator[FileStorage, None, None]:
         pdf.name = "pdf of test not tables"
 
         yield pdf
+
+
+@pytest.fixture(scope="function")
+def expect_excel_file_with_tabs() -> Generator[BytesIO, None, None]:
+    data_frames = (data_frame_fruits, data_frame_teams)
+
+    buffer = BytesIO()
+
+    with ExcelWriter(buffer, engine="openpyxl") as writer:  # type: ignore
+        for i, df in enumerate(data_frames):
+            df.to_excel(writer, sheet_name=f"Sheet_{i + 1}", index=False)
+
+    buffer.seek(0)
+    yield buffer
