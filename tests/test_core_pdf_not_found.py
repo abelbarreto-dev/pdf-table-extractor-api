@@ -8,4 +8,5 @@ from src.exception.FileNotFound import FileNotFound
 def test_core_pdf_not_found(file_none: FileStorage) -> None:
     with pytest.raises(FileNotFound) as ex:
         get_data_frame(file_none)
-        assert ex.value == "pdf file not found"
+
+    assert ex.value.args[0] == "pdf file not found"
