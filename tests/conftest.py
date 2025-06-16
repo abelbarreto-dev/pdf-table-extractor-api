@@ -11,6 +11,11 @@ def file_none() -> Generator[FileStorage, None, None]:
 
 
 @pytest.fixture(scope="function")
+def file_json() -> Generator[FileStorage, None, None]:
+    yield FileStorage(content_type="application/json")
+
+
+@pytest.fixture(scope="function")
 def pdf_file() -> Generator[FileStorage, None, None]:
     pdf = FileStorage(content_type="application/pdf")
 
@@ -24,5 +29,23 @@ def pdf_file() -> Generator[FileStorage, None, None]:
         pdf.stream = doc
         pdf.filename = "file_test_pdf.pdf"
         pdf.name = "pdf of test"
+
+        yield pdf
+
+
+@pytest.fixture(scope="function")
+def pdf_not_tables() -> Generator[FileStorage, None, None]:
+    pdf = FileStorage(content_type="application/pdf")
+
+    filename = (
+        "file_test_not_tables.pdf"
+        if isfile("file_test_not_tables.pdf")
+        else "../file_test_not_tables.pdf"
+    )
+
+    with open(filename, "rb") as doc:
+        pdf.stream = doc
+        pdf.filename = "file_test_not_tables.pdf"
+        pdf.name = "pdf of test not tables"
 
         yield pdf
