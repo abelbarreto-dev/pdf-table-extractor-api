@@ -25,6 +25,9 @@ jobs:
         TEST_PORT: ${{ secrets.TEST_PORT}}
         TEST_CONTENT_TYPE: ${{ secrets.TEST_CONTENT_TYPE }}
       run: |
+        echo "TEST_BASE_URL=$TEST_BASE_URL" >> $GITHUB_ENV
+        echo "TEST_PORT=$TEST_PORT" >> $GITHUB_ENV
+        echo "TEST_CONTENT_TYPE=$TEST_CONTENT_TYPE" >> $GITHUB_ENV
         echo "Secrets Loaded!"
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
