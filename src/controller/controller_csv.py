@@ -40,5 +40,6 @@ class ControllerCsv:
         response.stream = csv_resp
         response.status_code = 201
         response.mimetype = "application/zip"
+        response.headers["filename-csv-zipped"] = zip_file
 
         return response
