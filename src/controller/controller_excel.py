@@ -26,5 +26,6 @@ class ControllerExcel:
         response.stream = excel
         response.status_code = 201
         response.mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        response.headers["filename-excel"] = format_excel
 
         return response

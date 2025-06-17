@@ -3,12 +3,19 @@ from os.path import isfile
 from typing import Generator
 
 import pytest
+from dotenv import load_dotenv
 from flask import Response, Request, Flask
-from flask.ctx import RequestContext
+from flask.testing import FlaskClient
 from pandas import ExcelWriter
 from werkzeug.datastructures import FileStorage
 
+from src.route.pdf_csv import pdf_csv
+from src.route.pdf_excel_routes import pdf_excel
 from tests.mocks.table_data_frame import data_frame_teams, data_frame_fruits
+from tests.mocks.envs_test_enum import EnvsTestEnum
+
+
+load_dotenv()
 
 
 @pytest.fixture(scope="function")
@@ -75,6 +82,20 @@ def expect_excel_file_with_tabs() -> Generator[BytesIO, None, None]:
 @pytest.fixture(scope="function")
 def response_test() -> Generator[Response, None, None]:
     yield Response()
+
+
+@pytest.fixture(scope="function")
+def app_test() -> Generator[FlaskClient, None, None]:
+    app = Flask(__name__)
+    app.config["TESTING"] = True
+    app.config["HOST"] = EnvsTestEnum.BASE_URL
+    app.config["POST"] = EnvsTestEnum.PORT
+
+    app.register_blueprint(pdf_csv)
+    app.register_blueprint(pdf_excel)
+
+    with FlaskClient(app) as client:
+        yield client
 
 
 @pytest.fixture(scope="function")
