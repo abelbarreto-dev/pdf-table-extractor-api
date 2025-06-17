@@ -19,11 +19,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Load Secrets
+    - name: Loading Secrets...
       env:
         TEST_BASE_URL: ${{ secrets.TEST_BASE_URL }}
         TEST_PORT: ${{ secrets.TEST_PORT}
         TEST_CONTENT_TYPE: ${{ secrets.TEST_CONTENT_TYPE }}
+      run: |
+        echo "Secrets Loaded!"
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
