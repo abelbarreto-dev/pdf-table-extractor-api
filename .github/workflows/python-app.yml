@@ -22,7 +22,7 @@ jobs:
     - name: Loading Secrets...
       env:
         TEST_BASE_URL: ${{ secrets.TEST_BASE_URL }}
-        TEST_PORT: ${{ secrets.TEST_PORT}
+        TEST_PORT: ${{ secrets.TEST_PORT}}
         TEST_CONTENT_TYPE: ${{ secrets.TEST_CONTENT_TYPE }}
       run: |
         echo "Secrets Loaded!"
