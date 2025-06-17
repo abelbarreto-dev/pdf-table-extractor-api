@@ -3,6 +3,8 @@ from os.path import isfile
 from typing import Generator
 
 import pytest
+from flask import Response, Request, Flask
+from flask.ctx import RequestContext
 from pandas import ExcelWriter
 from werkzeug.datastructures import FileStorage
 
@@ -67,3 +69,18 @@ def expect_excel_file_with_tabs() -> Generator[BytesIO, None, None]:
 
     buffer.seek(0)
     yield buffer
+
+
+
+@pytest.fixture(scope="function")
+def response_test() -> Generator[Response, None, None]:
+    yield Response()
+
+
+@pytest.fixture(scope="function")
+def request_test() -> Generator[Request, None, None]:
+    app = Flask(__name__)
+    app.config["TESTING"] = True
+
+    with app.test_request_context() as context:
+        yield context.request
